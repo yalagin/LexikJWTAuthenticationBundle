@@ -9,6 +9,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTEncodedEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Token\JWTUserToken;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\PayloadEnrichmentInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Tests\Stubs\User as CustomUser;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\User\InMemoryUser;
@@ -48,6 +49,25 @@ class JWTManagerTest extends TestCase
         $this->assertEquals('secrettoken', $manager->create($this->createUser('user', 'password')));
     }
 
+    public function testCreateWithPayloadEnrichment()
+    {
+        $dispatcher = $this->getEventDispatcherMock();
+        $encoder = $this->getJWTEncoderMock();
+        $encoder
+            ->method('encode')
+            ->with($this->arrayHasKey('baz'))
+            ->willReturn('secrettoken');
+
+        $manager = new JWTManager($encoder, $dispatcher, 'username', new class() implements PayloadEnrichmentInterface {
+            public function enrich(UserInterface $user, array &$payload): void
+            {
+                $payload['baz'] = 'qux';
+            }
+        });
+
+        $this->assertEquals('secrettoken', $manager->create($this->createUser('user', 'password')));
+    }
+
     /**
      * test create.
      */
@@ -70,6 +90,26 @@ class JWTManagerTest extends TestCase
             ->willReturn('secrettoken');
 
         $manager = new JWTManager($encoder, $dispatcher, 'username');
+        $payload = ['foo' => 'bar'];
+        $this->assertEquals('secrettoken', $manager->createFromPayload($this->createUser('user', 'password'), $payload));
+    }
+
+    public function testCreateFromPayloadWithPayloadEnrichment()
+    {
+        $dispatcher = $this->getEventDispatcherMock();
+
+        $encoder = $this->getJWTEncoderMock();
+        $encoder
+            ->method('encode')
+            ->with($this->arrayHasKey('baz'))
+            ->willReturn('secrettoken');
+
+        $manager = new JWTManager($encoder, $dispatcher, 'username', new class() implements PayloadEnrichmentInterface {
+            public function enrich(UserInterface $user, array &$payload): void
+            {
+                $payload['baz'] = 'qux';
+            }
+        });
         $payload = ['foo' => 'bar'];
         $this->assertEquals('secrettoken', $manager->createFromPayload($this->createUser('user', 'password'), $payload));
     }
