@@ -22,14 +22,14 @@ To configure token blocklist, update your `lexik_jwt_authentication.yaml` file:
             cache: cache.app
 
 
-Enabling ``blocklist_token`` causes the activation of listeners:
+Enabling ``blocklist_token``:
 
-* an event listener ``Lexik\Bundle\JWTAuthenticationBundle\EventListenerAddClaimsToJWTListener`` which adds a ``jti`` claim if not present when the token is created
+* Adds a ``jti`` claim to the payload via `Lexik\Bundle\JWTAuthenticationBundle\Services\PayloadEnrichment\RandomJtiEnrichment` passed as an argument to the `Lexik\Bundle\JWTAuthenticationBundle\Services\JwtManager`
 
-* an event listener ``Lexik\Bundle\JWTAuthenticationBundle\BlockJWTListener`` which blocks JWTs on logout (``Symfony\Component\Security\Http\Event\LogoutEvent``)
+* activates the event listener ``Lexik\Bundle\JWTAuthenticationBundle\BlockJWTListener`` which blocks JWTs on logout (``Symfony\Component\Security\Http\Event\LogoutEvent``)
 or on login failure due to the user not being enabled (``Symfony\Component\Security\Core\Exception\DisabledException``)
 
-* an event listener ``Lexik\Bundle\JWTAuthenticationBundle\RejectBlockedTokenListener`` which rejects blocked tokens during authentication
+* activates an event listener ``Lexik\Bundle\JWTAuthenticationBundle\RejectBlockedTokenListener`` which rejects blocked tokens during authentication
 
 To block JWTs on logout, you must either activate logout in the firewall configuration or do it programmatically
 
