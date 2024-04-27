@@ -1,7 +1,14 @@
 CHANGELOG
 =========
 
-For a diff between two versions https://github.com/lexik/LexikJWTAuthenticationBundle/compare/v1.0.0...v2.20.3
+For a diff between two versions https://github.com/lexik/LexikJWTAuthenticationBundle/compare/v1.0.0...v2.21.0
+
+## [2.21.0](https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v2.21.0) (2024-04-27)
+
+* feature [\#1218](https://github.com/lexik/LexikJWTAuthenticationBundle/pull/1170) Invalidate a JWT token ([@ldaspt](https://github.com/ldaspt))
+* feature [\#1170](https://github.com/lexik/LexikJWTAuthenticationBundle/pull/1170) Invalidate a JWT token ([@ldaspt](https://github.com/ldaspt))
+* feature [\#1207](https://github.com/lexik/LexikJWTAuthenticationBundle/pull/1207) Web-Token Framework simplified ([@Spomky](https://github.com/Spomky))
+* bug [\60770f1](https://github.com/lexik/LexikJWTAuthenticationBundle/commit/60770f1fb9ec0b8b0f27a0ee9e2bf441ca4a1db9) Fix CI & web-token encryption support ([@Spomky](https://github.com/Spomky))
 
 ## [2.20.3](https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v2.20.3) (2023-12-14)
 
