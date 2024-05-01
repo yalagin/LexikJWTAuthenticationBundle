@@ -66,7 +66,7 @@ class CacheItemPoolBlockedTokenManagerTest extends TestCase
                 ]
             )
         );
-        self::assertCount(0, $cacheAdapter->getItems());
+        self::assertCount(0, iterator_to_array($cacheAdapter->getItems()));
     }
 
     public function testShouldBlockTokenIfPaylaodHasNotExpired()

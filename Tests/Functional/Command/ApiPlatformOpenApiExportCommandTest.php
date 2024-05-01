@@ -127,7 +127,8 @@ class ApiPlatformOpenApiExportCommandTest extends TestCase
     }
   },
   "security": [],
-  "tags": []
+  "tags": [],
+  "webhooks": {}
 }
 JSON
             , $tester->getDisplay());
