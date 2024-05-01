@@ -104,6 +104,11 @@ class AppKernel extends Kernel
                     'title' => 'LexikJWTAuthenticationBundle',
                     'description' => 'API Platform integration in LexikJWTAuthenticationBundle',
                     'version' => '1.0.0',
+                    'keep_legacy_inflector' => false,
+                    'formats' => [
+                        'jsonld' => ['application/ld+json'],
+                        'json' => ['application/json']
+                    ]
                 ]);
                 $container->prependExtensionConfig('lexik_jwt_authentication', [
                     'api_platform' => [
