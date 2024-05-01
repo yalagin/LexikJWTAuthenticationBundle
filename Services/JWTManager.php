@@ -10,6 +10,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTEncodedEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\PayloadEnrichment\NullEnrichment;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\InMemoryUser;
@@ -27,12 +28,14 @@ class JWTManager implements JWTTokenManagerInterface
     protected JWTEncoderInterface $jwtEncoder;
     protected EventDispatcherInterface $dispatcher;
     protected string $userIdClaim;
+    private $payloadEnrichment;
 
-    public function __construct(JWTEncoderInterface $encoder, EventDispatcherInterface $dispatcher, string $userIdClaim)
+    public function __construct(JWTEncoderInterface $encoder, EventDispatcherInterface $dispatcher, string $userIdClaim, PayloadEnrichmentInterface $payloadEnrichment = null)
     {
         $this->jwtEncoder = $encoder;
         $this->dispatcher = $dispatcher;
         $this->userIdClaim = $userIdClaim;
+        $this->payloadEnrichment = $payloadEnrichment ?? new NullEnrichment();
     }
 
     /**
@@ -44,6 +47,8 @@ class JWTManager implements JWTTokenManagerInterface
     {
         $payload = ['roles' => $user->getRoles()];
         $this->addUserIdentityToPayload($user, $payload);
+
+        $this->payloadEnrichment->enrich($user, $payload);
 
         return $this->generateJwtStringAndDispatchEvents($user, $payload);
     }
@@ -57,6 +62,8 @@ class JWTManager implements JWTTokenManagerInterface
     {
         $payload = array_merge(['roles' => $user->getRoles()], $payload);
         $this->addUserIdentityToPayload($user, $payload);
+
+        $this->payloadEnrichment->enrich($user, $payload);
 
         return $this->generateJwtStringAndDispatchEvents($user, $payload);
     }
