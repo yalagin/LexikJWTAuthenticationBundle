@@ -64,7 +64,7 @@ class JWTManagerTest extends TestCase
             }
         });
 
-        $this->assertEquals('secrettoken', $manager->create($this->createUser('user', 'password')));
+        $this->assertEquals('secrettoken', $manager->create($this->createUser()));
     }
 
     /**
@@ -110,7 +110,7 @@ class JWTManagerTest extends TestCase
             }
         });
         $payload = ['foo' => 'bar'];
-        $this->assertEquals('secrettoken', $manager->createFromPayload($this->createUser('user', 'password'), $payload));
+        $this->assertEquals('secrettoken', $manager->createFromPayload($this->createUser(), $payload));
     }
 
     /**
