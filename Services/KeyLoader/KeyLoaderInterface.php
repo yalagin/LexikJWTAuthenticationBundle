@@ -10,7 +10,6 @@ namespace Lexik\Bundle\JWTAuthenticationBundle\Services\KeyLoader;
 interface KeyLoaderInterface
 {
     public const TYPE_PUBLIC = 'public';
-
     public const TYPE_PRIVATE = 'private';
 
     /**
@@ -22,10 +21,7 @@ interface KeyLoaderInterface
      */
     public function loadKey($type);
 
-    /**
-     * @return string|null
-     */
-    public function getPassphrase();
+    public function getPassphrase(): ?string;
 
     public function getSigningKey(): ?string;
 

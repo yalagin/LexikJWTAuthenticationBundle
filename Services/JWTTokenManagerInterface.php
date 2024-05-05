@@ -26,7 +26,7 @@ interface JWTTokenManagerInterface
      * @return array|false The JWT token payload or false if an error occurs
      * @throws JWTDecodeFailureException
      */
-    public function decode(TokenInterface $token);
+    public function decode(TokenInterface $token): array|bool;
 
     /**
      * Parses a raw JWT token and returns its payload

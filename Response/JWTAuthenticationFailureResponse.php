@@ -2,6 +2,7 @@
 
 namespace Lexik\Bundle\JWTAuthenticationBundle\Response;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-final class JWTAuthenticationFailureResponse extends JWTCompatAuthenticationFailureResponse
+final class JWTAuthenticationFailureResponse extends JsonResponse
 {
     private string $message;
 
@@ -20,6 +21,14 @@ final class JWTAuthenticationFailureResponse extends JWTCompatAuthenticationFail
         $this->message = $message;
 
         parent::__construct(null, $statusCode, ['WWW-Authenticate' => 'Bearer']);
+    }
+
+    /**
+     * Sets the response data with the statusCode & message included.
+     */
+    public function setData(mixed $data = []): static
+    {
+        return parent::setData((array)$data + ["code" => $this->statusCode, "message" => $this->getMessage()]);
     }
 
     /**

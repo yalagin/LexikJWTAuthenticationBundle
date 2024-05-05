@@ -12,9 +12,7 @@ namespace Lexik\Bundle\JWTAuthenticationBundle\Helper;
 class JWTSplitter
 {
     private string $header;
-
     private string $payload;
-
     private string $signature;
 
     /**

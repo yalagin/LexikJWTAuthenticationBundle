@@ -16,9 +16,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 class AuthenticationFailureEvent extends Event
 {
     protected AuthenticationException $exception;
-
     protected ?Response $response;
-
     protected ?Request $request;
 
     public function __construct(?AuthenticationException $exception, ?Response $response, ?Request $request = null)

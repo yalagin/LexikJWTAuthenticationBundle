@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 class OpenApiFactory implements OpenApiFactoryInterface
 {
     private OpenApiFactoryInterface $decorated;
-
     private string $checkPath;
     private string $usernamePath;
     private string $passwordPath;

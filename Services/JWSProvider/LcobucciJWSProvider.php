@@ -61,7 +61,7 @@ class LcobucciJWSProvider implements JWSProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function create(array $payload, array $header = [])
+    public function create(array $payload, array $header = []): CreatedJWS
     {
         $jws = new JWTBuilder(new JoseEncoder(), ChainedFormatter::default());
 
@@ -109,7 +109,7 @@ class LcobucciJWSProvider implements JWSProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function load($token)
+    public function load(string $token): LoadedJWS
     {
         $jws = (new JWTParser(new JoseEncoder()))->parse($token);
 

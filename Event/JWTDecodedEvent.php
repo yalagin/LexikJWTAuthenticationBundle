@@ -12,7 +12,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 class JWTDecodedEvent extends Event
 {
     protected array $payload;
-
     protected bool $isValid;
 
     public function __construct(array $payload)

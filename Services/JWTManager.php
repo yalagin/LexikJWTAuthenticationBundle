@@ -96,7 +96,7 @@ class JWTManager implements JWTTokenManagerInterface
      *
      * @throws JWTDecodeFailureException
      */
-    public function decode(TokenInterface $token)
+    public function decode(TokenInterface $token): array|bool
     {
         if (!($payload = $this->jwtEncoder->decode($token->getCredentials()))) {
             return false;
@@ -135,7 +135,7 @@ class JWTManager implements JWTTokenManagerInterface
      * Add user identity to payload, username by default.
      * Override this if you need to identify it by another property.
      */
-    protected function addUserIdentityToPayload(UserInterface $user, array &$payload)
+    protected function addUserIdentityToPayload(UserInterface $user, array &$payload): void
     {
         $accessor = PropertyAccess::createPropertyAccessor();
         $payload[$this->userIdClaim] = $accessor->getValue($user, $accessor->isReadable($user, $this->userIdClaim) ? $this->userIdClaim : 'user_identifier');
