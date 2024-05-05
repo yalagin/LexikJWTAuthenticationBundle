@@ -1,7 +1,13 @@
 CHANGELOG
 =========
 
-For a diff between two versions https://github.com/lexik/LexikJWTAuthenticationBundle/compare/v1.0.0...v2.21.0
+For a diff between two versions https://github.com/lexik/LexikJWTAuthenticationBundle/compare/v1.0.0...v3.0.0
+
+## [3.0.0](https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v3.0.0) (2024-05-05)
+
+* feature [\#1202](https://github.com/lexik/LexikJWTAuthenticationBundle/pull/1202) Remove support for Symfony <6.4 and PHP <8.2 ([@maxhelias](https://github.com/maxhelias))
+* feature [\5b5400b](https://github.com/lexik/LexikJWTAuthenticationBundle/commit/5b5400b) Remove namshi/jose on 3.x ([@maxhelias](https://github.com/maxhelias))
+* feature [\#1056](https://github.com/lexik/LexikJWTAuthenticationBundle/pull/1056) Drop PHP <7.1 and Symfony <5.3 support ([@wouter-toppy](https://github.com/wouter-toppy))
 
 ## [2.21.0](https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v2.21.0) (2024-04-27)
 
