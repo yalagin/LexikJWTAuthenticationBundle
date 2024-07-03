@@ -105,6 +105,7 @@ class AppKernel extends Kernel
                     'description' => 'API Platform integration in LexikJWTAuthenticationBundle',
                     'version' => '1.0.0',
                     'keep_legacy_inflector' => false,
+                    'use_symfony_listeners' => true,
                     'formats' => [
                         'jsonld' => ['application/ld+json'],
                         'json' => ['application/json']

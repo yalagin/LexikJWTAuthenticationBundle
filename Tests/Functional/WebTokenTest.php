@@ -2,6 +2,7 @@
 
 namespace Lexik\Bundle\JWTAuthenticationBundle\Tests\Functional;
 
+use Symfony\Component\HttpFoundation\Request;
 use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\Core\JWK;
 use Jose\Component\Encryption\Algorithm\ContentEncryption\A128GCM;
@@ -76,7 +77,7 @@ class WebTokenTest extends TestCase
 
         //When
         static::$client->jsonRequest('POST', '/login_check', ['username' => 'lexik', 'password' => 'dummy']);
-        static::$client->request('GET', '/api/secured', [], [], ['HTTP_AUTHORIZATION' => 'Bearer ' . $this->getTokenFromResponse(static::$client->getResponse())]);
+        static::$client->request(Request::METHOD_GET, '/api/secured', [], [], ['HTTP_AUTHORIZATION' => 'Bearer ' . $this->getTokenFromResponse(static::$client->getResponse())]);
         static::$client->getResponse();
 
         //Then
@@ -103,7 +104,7 @@ class WebTokenTest extends TestCase
         });
 
         //When
-        static::$client->request('GET', '/api/secured', [], [], ['HTTP_AUTHORIZATION' => 'Bearer ' . $token]);
+        static::$client->request(Request::METHOD_GET, '/api/secured', [], [], ['HTTP_AUTHORIZATION' => 'Bearer ' . $token]);
         $response = static::$client->getResponse();
 
         //Then
@@ -137,7 +138,7 @@ class WebTokenTest extends TestCase
         );
 
         //When
-        static::$client->request('GET', '/api/secured', [], [], ['HTTP_AUTHORIZATION' => 'Bearer ' . $token]);
+        static::$client->request(Request::METHOD_GET, '/api/secured', [], [], ['HTTP_AUTHORIZATION' => 'Bearer ' . $token]);
         $response = static::$client->getResponse();
 
         //Then
