@@ -1,7 +1,11 @@
 CHANGELOG
 =========
 
-For a diff between two versions https://github.com/lexik/LexikJWTAuthenticationBundle/compare/v1.0.0...v3.0.0
+For a diff between two versions https://github.com/lexik/LexikJWTAuthenticationBundle/compare/v1.0.0...v3.1.0
+
+## [3.1.0](https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v3.1.0) (2024-07-03)
+
+* bug [\#1226](https://github.com/lexik/LexikJWTAuthenticationBundle/pull/1226) feature: fix deprecation of Extension ([@Chris8934](https://github.com/Chris8934))
 
 ## [3.0.0](https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v3.0.0) (2024-05-05)
 
