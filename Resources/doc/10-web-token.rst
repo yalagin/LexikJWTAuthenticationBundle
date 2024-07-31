@@ -9,7 +9,8 @@ use of encrypted tokens and key rotations.
     This feature is only available with PHP 8.1+ and Symfony 6.1+.
 
 
-# Dependency Installation:
+Dependency Installation:
+-----------------------------
 
 To enable this feature, you must install the following dependencies:
 
@@ -17,7 +18,8 @@ To enable this feature, you must install the following dependencies:
 
     composer require web-token/jwt-bundle
 
-## About Algorithms
+About Algorithms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There are two type of signature algorithms: symmetric and asymmetric.
 
@@ -29,9 +31,11 @@ Asymmetric algorithms are slower, but because keys are asymmetric you can allow 
 for validating the tokens without allowing them to forge new ones. This is commonly used when
 tokens are meant to be processed by third parties.
 
-# Migrating Configuration
+Migrating Configuration
+-----------------------------
 
-## Automatic Migration
+Automatic Migration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A migration command is available when working with the debug mode enabled (dev environment).
 
@@ -47,11 +51,13 @@ After running the migration tool, your signature keyset will contain the key is 
 but formatted as a JWK (Json Wek Key). In addition, two random keys are added. These keys are not used and will be
 dropped when rotating the keyset.
 
-## Manual Migration
+Manual Migration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to migrate your configuration manually, you can follow the next steps.
 
-### Signature Key and Keyset
+Signature Key and Keyset
+^^^^^^^^^^^
 
 The signature private key and the signature public keyset are mandatory for using the Web-Token library.
 You can generate them using the following commands. Please use the one that corresponds to your algorithm.
@@ -74,7 +80,8 @@ You can generate them using the following commands. Please use the one that corr
     # Then, we rotate the keyset to add signautre private key to the keyset.
     ./jose.phar keyset:rotate `cat config/jwt/signature.jwkset` `cat config/jwt/signature.jwk` > config/jwt/signature.jwkset
 
-### Bundle Configuration
+Bundle Configuration
+^^^^^^^^^^^
 
 The bundle configuration is very similar to the one used by the previous version of the bundle.
 You just have to replace the ``lexik_jwt_authentication.encoder.***`` encoder by the ``lexik_jwt_authentication.encoder.web_token`` encoder.
@@ -111,7 +118,8 @@ In the example, we use the environment variables to retrieve the signature key a
     We recommend using the environment variables to store the signature key and keyset instead of files.
 
 
-# Encryption Support
+Encryption Support
+-----------------------------
 
 With WebTokenBundle, you can encrypt your tokens. The tokens will only be readable by the applications
 that have the private key to decrypt them.
@@ -128,7 +136,8 @@ The output will be the updated configuration for the bundle.
     bin/console lexik:jwt:enable-encryption
 
 
-# Key Rotation
+Key Rotation
+-----------------------------
 
 Among all the features offered by the Web-Token library,
 you certainly want to rotate your keys on a regular basis.
@@ -151,7 +160,8 @@ The objective is to rotate the keyset by adding a new key and removing the oldes
 The new private key will be stored in the ``config/jwt/signature.jwk`` file,
 and the new public keyset will be updated.
 
-## Signature Private Key
+Signature Private Key
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The new signature private key shall be compatible with the algorithm declared in the configuration.
 For example, if you use the ``RS256`` algorithm, you must generate a RSA private key.
@@ -164,7 +174,8 @@ Hereafter few examples of RSA (``RS***``/``PS***``), OCT (``HS***``), EC (``ES**
     ./jose.phar key:generate:ec --random_id --use=sig --alg=ES256 P-256 > config/jwt/signature.jwk
     ./jose.phar key:generate:okp --random_id --use=sig --alg=ED256 Ed25519 > config/jwt/signature.jwk
 
-## Signature Public Keyset
+Signature Public Keyset
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now that you have a new private key, you can rotate the public keyset.
 The rotation is done by adding the new key at beginiing of the keyset and removing the oldest (last) one.
@@ -173,7 +184,8 @@ The rotation is done by adding the new key at beginiing of the keyset and removi
 
     ./jose.phar keyset:rotate `cat config/jwt/signature.jwkset` `cat config/jwt/signature.jwk` > config/jwt/signature.jwkset
 
-## Encryption Key and Keyset
+Encryption Key and Keyset
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Encryption keys are managed in the same way as signature keys.
 The  differences are as follows:
