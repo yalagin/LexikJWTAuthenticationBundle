@@ -253,5 +253,6 @@ The following documents are available:
 -  :doc:`A database-less user provider </8-jwt-user-provider>`
 -  :doc:`Accessing the authenticated JWT token </9-access-authenticated-jwt-token>`
 -  :doc:`Web-Token feature </10-web-token>`
+-  :doc:`Invalidate token on logout </11-invalidate-token>`
 
 .. _Web-Token: https://web-token.spomky-labs.com/
