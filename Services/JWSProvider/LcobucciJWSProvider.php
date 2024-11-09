@@ -26,6 +26,7 @@ use Lcobucci\JWT\Validation\Validator;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\KeyLoader\KeyLoaderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Signature\CreatedJWS;
 use Lexik\Bundle\JWTAuthenticationBundle\Signature\LoadedJWS;
+use Psr\Log\LoggerInterface;
 
 /**
  * @final
@@ -40,16 +41,18 @@ class LcobucciJWSProvider implements JWSProviderInterface
     private ?int $ttl;
     private ?int $clockSkew;
     private bool $allowNoExpiration;
+    private LoggerInterface $logger;
 
     /**
      * @throws \InvalidArgumentException If the given crypto engine is not supported
      */
-    public function __construct(KeyLoaderInterface $keyLoader, string $signatureAlgorithm, ?int $ttl, ?int $clockSkew, bool $allowNoExpiration = false, Clock $clock = null)
+    public function __construct(KeyLoaderInterface $keyLoader, string $signatureAlgorithm, ?int $ttl, ?int $clockSkew, LoggerInterface $logger, bool $allowNoExpiration = false, Clock $clock = null)
     {
         if (null === $clock) {
             $clock = new SystemClock(new \DateTimeZone('UTC'));
         }
 
+        $this->logger = $logger;
         $this->keyLoader = $keyLoader;
         $this->clock = $clock;
         $this->signer = $this->getSignerForAlgorithm($signatureAlgorithm);
@@ -100,7 +103,18 @@ class LcobucciJWSProvider implements JWSProviderInterface
         $e = $token = null;
         try {
             $token = $this->getSignedToken($jws);
-        } catch (\InvalidArgumentException) {
+        } catch (\InvalidArgumentException $exception) {
+            $privateKey = InMemory::plainText($this->keyLoader->loadKey(KeyLoaderInterface::TYPE_PRIVATE), $this->signer instanceof Hmac ? '' : (string)$this->keyLoader->getPassphrase());
+            $publicKey = InMemory::plainText($this->keyLoader->loadKey(KeyLoaderInterface::TYPE_PRIVATE), $this->signer instanceof Hmac ? '' : (string)$this->keyLoader->getPassphrase());
+
+            $this->logger->error(
+                $exception->getMessage(),
+                [
+                    "isFormatKeyPrivateCorrect" => $this->isPEMFormatKey($privateKey->contents()),
+                    "isFormatKeyPublicCorrect" => $this->isPEMFormatKey($publicKey->contents()),
+                    "isPassphraseFormatKeyCorrect" => $this->isPassphraseFormatKey($publicKey->passphrase()),
+                ]
+            );
         }
 
         return new CreatedJWS((string) $token, null === $e);
@@ -224,5 +238,17 @@ class LcobucciJWSProvider implements JWSProviderInterface
         }
 
         return $builder;
+    }
+
+    private function isPEMFormatKey(string $key): bool
+    {
+        return preg_match('/^-----BEGIN (RSA )?(PUBLIC|PRIVATE) KEY-----/', $key) &&
+            preg_match('/-----END (RSA )?(PUBLIC|PRIVATE) KEY-----$/', $key) &&
+            preg_match('/^[a-zA-Z0-9+\/=\r\n]+$/', $key);
+    }
+
+    private function isPassphraseFormatKey(string $key): bool
+    {
+        return preg_match('/^[a-zA-Z0-9+\/=\r\n]+$/', $key);
     }
 }
