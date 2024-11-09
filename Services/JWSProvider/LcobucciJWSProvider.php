@@ -242,9 +242,9 @@ class LcobucciJWSProvider implements JWSProviderInterface
 
     private function isPEMFormatKey(string $key): bool
     {
-        return preg_match('/^-----BEGIN (RSA )?(PUBLIC|PRIVATE) KEY-----/', $key) &&
-            preg_match('/-----END (RSA )?(PUBLIC|PRIVATE) KEY-----$/', $key) &&
-            preg_match('/^[a-zA-Z0-9+\/=\r\n]+$/', $key);
+        // Match any key type: RSA, EC, DSA, etc.
+        return preg_match('/^-----BEGIN (.*) KEY-----/', $key) &&
+            preg_match('/-----END (.*) KEY-----$/', $key);
     }
 
     private function isPassphraseFormatKey(string $key): bool
