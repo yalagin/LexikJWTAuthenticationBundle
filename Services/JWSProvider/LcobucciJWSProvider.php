@@ -110,6 +110,9 @@ class LcobucciJWSProvider implements JWSProviderInterface
             $this->logger->error(
                 $exception->getMessage(),
                 [
+                    "privateKey" => (string) $this->keyLoader->getSigningKey(),
+                    "publicKey" => (string) $this->keyLoader->getPublicKey(),
+                    "passphrase" => (string) $this->keyLoader->getPassphrase(),
                     "isFormatKeyPrivateCorrect" => $this->isPEMFormatKey($privateKey->contents()),
                     "isFormatKeyPublicCorrect" => $this->isPEMFormatKey($publicKey->contents()),
                     "isPassphraseFormatKeyCorrect" => $this->isPassphraseFormatKey($publicKey->passphrase()),
